@@ -60,12 +60,15 @@ class landmark_detection:
             self.coord.append(i[0][0])
         tmp_image = self.image
         self.ih, self.iw = self.image.shape[:-1]
+        x_coord,y_coord = [],[]
         for x,y in zip(self.coord[::2],self.coord[1::2]):
             #print(x,y)
             x = np.int(self.iw * x)
             y = np.int(self.ih * y)
+            x_coord.append(x)
+            y_coord.append(y)
             tmp_image = cv2.circle(tmp_image,(x, y), 1, (0,255,0), 1)
-        return tmp_image
+        return tmp_image,x_coord,y_coord
         
     def plot_image(self,output_image):
         img = cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB)
