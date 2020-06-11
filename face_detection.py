@@ -23,8 +23,8 @@ class face_detection:
         
         print("Successfully loaded the network")
         
-    def pre_process_input(self,image_path):
-        self.image=cv2.imread(image_path)
+    def pre_process_input(self,image):
+        self.image=image#cv2.imread(image_path)
         #print("Input shape",image.shape) #height, width, channel 
         resized_img = cv2.resize(self.image, (672,384)) #width,height
         #resized_img.shape
@@ -71,7 +71,7 @@ class face_detection:
                 
         #for box in self.boxes:
         #    cv2.rectangle(tmp_image, (box[0], box[1]), (box[2], box[3]), (232, 35, 244), 2)
-        return tmp_image
+        return tmp_image,self.boxes
         
     def plot_image(self,output_image):
         img = cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB)
@@ -92,7 +92,3 @@ class face_detection:
             #print("saved cropped image as: bin/face-{}.jpg".format(id+1))
             cropped_output.append(crop_img_org)
         return cropped_output
-
-
-      
-   
