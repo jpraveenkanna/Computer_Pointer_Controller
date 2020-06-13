@@ -88,7 +88,18 @@ class face_detection:
         cropped_output = []
         for id,images in enumerate(self.boxes):
             crop_img_org = self.image[images[1]:images[3], images[0]:images[2]]
+            #ymin:ymax, xmin:xmax 
             #cv2.imwrite("bin/face-{}.jpg".format(id+1), crop_img_org)
             #print("saved cropped image as: bin/face-{}.jpg".format(id+1))
             cropped_output.append(crop_img_org)
         return cropped_output
+    
+    def get_face_location(self):   
+        face_loc_list=[]
+        
+        for face_id,box in enumerate(self.boxes):
+            face_loc = self.image[box[1]:box[3], box[0]:box[2]]
+            #ymin:ymax, xmin:xmax
+            face_loc_list.append(face_loc)
+        return face_loc_list
+

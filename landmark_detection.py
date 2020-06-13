@@ -13,8 +13,6 @@ class landmark_detection:
         self.model_weights=model_name+'.bin'
         self.model_structure=model_name+'.xml'
         self.device=device
-        self.image=None
-        self.image_copy=None
          
 
     def load_model(self):
@@ -27,9 +25,8 @@ class landmark_detection:
         
         print("Successfully loaded the network")
         
-    def pre_process_input(self,image_ref):
-        self.image=image_ref
-        self.image_copy=image_ref
+    def pre_process_input(self,image):
+        self.image=image
         resized_img = cv2.resize(self.image, (48, 48))
         input_img = np.moveaxis(resized_img, -1, 0)
         input_img=np.expand_dims(input_img, axis=0)
@@ -67,12 +64,12 @@ class landmark_detection:
             y = np.int(self.ih * y)
             x_coord.append(x)
             y_coord.append(y)
-            tmp_image = cv2.circle(tmp_image,(x, y), 1, (0,255,0), 1)
+            tmp_image = None #cv2.circle(tmp_image,(x, y), 1, (0,255,0), 1)
         return tmp_image,x_coord,y_coord
         
     def plot_image(self,output_image):
         img = cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB)
-        plt.figure(figsize = (3,3))
+        plt.figure(figsize = (8,5))
 
         plt.imshow(img,interpolation='nearest', aspect='auto')
         plt.show()
@@ -90,10 +87,11 @@ class landmark_detection:
         starting_point = (left_eye[0]-diagnol[0], left_eye[1]-diagnol[1])
         ending_point = (left_eye[0]+diagnol[0], left_eye[1]+diagnol[1])
 
+        left_eye_crop_full = None #cv2.rectangle(self.image, starting_point, ending_point, (232, 35, 244), 1)
+        #ld.plot_image(left_eye_crop)
         #ymin:ymax,  xmin,xmax
-        left_eye_crop = self.image_copy[starting_point[1]:ending_point[1]+1,
-                                        starting_point[0]:ending_point[0]+1]
-        
+        left_eye_crop = self.image[starting_point[1]:ending_point[1]+1,starting_point[0]:ending_point[0]+1]
+        #ld.plot_image(b) 
         return left_eye_crop
     
     def crop_right_eye(self, crop_percent):
@@ -104,8 +102,9 @@ class landmark_detection:
         starting_point = (right_eye[0]-diagnol[0], right_eye[1]-diagnol[1])
         ending_point = (right_eye[0]+diagnol[0], right_eye[1]+diagnol[1])
 
+        right_eye_crop_full = None #cv2.rectangle(self.image, starting_point, ending_point, (232, 35, 244), 1)
+        #ld.plot_image(left_eye_crop)
         #ymin:ymax,  xmin,xmax
-        right_eye_crop = self.image_copy[starting_point[1]:ending_point[1]+1,
-                                         starting_point[0]:ending_point[0]+1]
-
+        right_eye_crop = self.image[starting_point[1]:ending_point[1]+1,starting_point[0]:ending_point[0]+1]
+        #ld.plot_image(b) 
         return right_eye_crop

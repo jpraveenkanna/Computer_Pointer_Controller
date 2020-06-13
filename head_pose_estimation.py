@@ -25,8 +25,8 @@ class head_pose_estimation:
         
         print("Successfully loaded the network")
         
-    def pre_process_input(self,image_ref):
-        self.image=image_ref
+    def pre_process_input(self,image):
+        self.image=image
         resized_img = cv2.resize(self.image, (60, 60))
         input_img = np.moveaxis(resized_img, -1, 0)
         input_img=np.expand_dims(input_img, axis=0)
@@ -51,11 +51,10 @@ class head_pose_estimation:
         return result
     
     def preprocess_output(self, result):
-        pred = []
-        for i in result.keys():
-            prediction = result.get(i)
-            pred.append(prediction[0][0])
-            
+        pitch = result.get('angle_p_fc')[0,0]
+        roll = result.get('angle_r_fc')[0,0]
+        yaw = result.get('angle_y_fc')[0,0]
+        pred = [yaw,pitch,roll]
         pred=np.asarray(pred)
         pred=np.expand_dims(pred, axis=0)
         return pred
@@ -70,6 +69,5 @@ class head_pose_estimation:
     def save_image(self,image_id,image):
         cv2.imwrite("bin/head_pose-{}.jpg".format(image_id+1), image)
 
-        
         
         
