@@ -9,21 +9,17 @@ class head_pose_estimation:
     
     
     def __init__(self, model_name, device='CPU', extensions=None):
-        
         self.model_weights=model_name+'.bin'
         self.model_structure=model_name+'.xml'
         self.device=device
          
-
     def load_model(self):
-        
-        # Loading network to device
         self.core = IECore()
         self.model=self.core.read_network(self.model_structure, self.model_weights)
        
         self.net = self.core.load_network(network=self.model, device_name=self.device, num_requests=1)
         
-        print("Successfully loaded the network")
+        print("Successfully loaded the Headpose estimation model")
         
     def pre_process_input(self,image):
         self.image=image
@@ -39,9 +35,9 @@ class head_pose_estimation:
         for l in layers_in_model:
             if l  not in layers_supported:
                 all_layers_supported = False
-                print('Layer', l, 'is not supported')
+                print('Layer', l, '- not supported')
         if all_layers_supported:
-            print('All layers supported')
+            print('All layers supported - Headpose estimation')
     
     def get_input_name(self):
         self.input_name = next(iter(self.net.inputs))
@@ -62,7 +58,6 @@ class head_pose_estimation:
     def plot_image(self,output_image):
         img = cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB)
         plt.figure(figsize = (3,3))
-
         plt.imshow(img,interpolation='nearest', aspect='auto')
         plt.show()
         
