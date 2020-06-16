@@ -42,9 +42,9 @@ def build_argparser():
     parser.add_argument("-t", "--inputType", default= 'video',
                         type=str,help='Type either video or image')
     parser.add_argument('--mouse_precision', default='medium',
-                        help='Mouse movement precision')
+                        help='Mouse movement precision - low, medium, high')
     parser.add_argument('--mouse_speed', default='medium',
-                        help='Mouse movement speed')
+                        help='Mouse movement speed -slow, medium, fast')
     
     return parser
 
@@ -58,7 +58,9 @@ def visualize_frame(frame,face,x_coord,y_coord,gaze_vec,boxes,result):
                     (x_coord[1] + gaze_x, y_coord[1] - gaze_y),
                     (255,0,255), 5)
 
-    frame[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2]] = face    
+    frame[boxes[0][1]:boxes[0][3], boxes[0][0]:boxes[0][2]] = face 
+    cv2.imshow("Preview",frame)
+    cv2.waitKey(60)     
     return frame
 
 def process_frame(frame):
@@ -147,7 +149,7 @@ def process_video(input_video, video_output):
             break
 
 
-
+    cv2.destroyAllWindows() 
     out.release()
     feed.close()
     print("Saved the video")
@@ -165,6 +167,7 @@ if __name__ == '__main__':
         feed.load_data()
         frame = feed.cap
         _,output_img = process_frame(frame)
+        cv2.imshow("Preview window",output_img)
         cv2.imwrite(output_path,output_img)
         
     elif(args.inputType == 'video'):
