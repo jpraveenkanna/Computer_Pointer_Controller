@@ -103,7 +103,7 @@ def process_video(input_video, video_output,visualize):
             if mouse_controller is not None:
                 try:
                     mouse_controller.move(result[0], result[1])
-                    pass
+                    
                 except Exception as e:
                       print("Mouse controller exception:\n",e)
                       logger.info("Mouse controller exception:{}".format(e))
