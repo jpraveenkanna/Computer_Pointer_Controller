@@ -28,7 +28,7 @@ def visualize_frame(frame,face,x_coord,y_coord,gaze_vec,boxes,result):
         cv2.rectangle(frame, (box[0], box[1]), (box[2], box[3]), (232, 255, 244), 2)
 
     cv2.imshow("Preview",frame)
-    cv2.waitKey(60)     
+    cv2.waitKey(10)     
     return frame
 
 def process_frame(frame,visualize):
@@ -88,7 +88,7 @@ def process_video(input_video, video_output,visualize):
     for frame in feed.next_batch():
         if frame is not None:
             frame_counter += 1
-            key = cv2.waitKey(60)
+            key = cv2.waitKey(10)
             result, output_frame = process_frame(frame,visualize)
 
             out.write(output_frame)
