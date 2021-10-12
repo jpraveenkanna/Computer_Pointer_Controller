@@ -6,6 +6,6 @@ Pillow==7.1.2
 requests==2.22.0
 virtualenv==16.7.9
 pyautogui==0.9.48
-opencv-python==4.1.2.30
+opencv-python==4.2.0.32
 matplotlib==3.1.3
 
